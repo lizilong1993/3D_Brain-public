@@ -1,0 +1,9 @@
+model_type: main
+world_type: B
+enable_control_loss: true
+train_steps: 40
+val_interval: 10
+checkpoint_interval: 20
+batch_size: 8
+warmup_steps: 1000
+rewire_every: 100

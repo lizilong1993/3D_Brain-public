@@ -1,0 +1,3 @@
+model_type: main
+world_type: B
+enable_control_loss: true
