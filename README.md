@@ -12,11 +12,12 @@ recurrent networks. The package supports:
 - empirical RRP and Monte Carlo tail probability (`p_MC`) with the
   tie-inclusive rule `p_MC = (1 + n_>=) / (M + 1)`.
 
-> Scope note: this minimal release implements the **recurrent lesion operator**
-> (`LS_ctrl`, a permanent node mask over the whole sequence). It does not include
-> the exploratory event-window state-replacement operator or any pretrained
-> checkpoints/results from the manuscript. It is a code release, not a data
-> release.
+> Scope note: this minimal release implements two operators: the **event-local
+> state-replacement operator** (primary; hidden states inside the event window
+> are replaced with states from a non-overlapping temporal-control window) and
+> the **recurrent lesion operator** (`LS_ctrl`; permanent node mask, auxiliary).
+> It does not include pretrained checkpoints or manuscript results. It is a code
+> release, not a data release.
 
 ## Requirements
 
@@ -75,6 +76,29 @@ interface) from the candidate and the null pool, uses the latest checkpoint in
 `summarize_matched_null.py` expects 10 seeds x 4 null types x 1000 draws and
 writes per-seed/per-null counts (`n_less`, `n_equal`, `n_greater`), `RRP`, and
 the tie-inclusive `p_MC`.
+
+## Event-local RMT assay
+
+`scripts/event_local_rmt_batch.py` implements the event-window state-replacement
+operator. For each validation batch it chooses a three-timestep event window at
+the centre of the control-mask segment and a non-overlapping temporal-control
+window, replaces hidden states inside the recurrence, and computes
+
+```
+RMT = (event CE - baseline CE on event window)
+    - (control CE - baseline CE on control window)
+```
+
+Example (strict interface 0-23):
+
+```bash
+python scripts/event_local_rmt_batch.py \
+  --run-dir <run_dir> --seed 42 --draws 1000 --validation-batches 2 \
+  --iface-start 0 --iface-end 24 --out out/seed42
+```
+
+If the corrected candidate is empty, the script writes a JSON record with
+`status: "NE"`.
 
 ## Data
 
