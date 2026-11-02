@@ -93,12 +93,19 @@ Example (strict interface 0-23):
 
 ```bash
 python scripts/event_local_rmt_batch.py \
-  --run-dir <run_dir> --seed 42 --draws 1000 --validation-batches 2 \
-  --iface-start 0 --iface-end 24 --out out/seed42
+  --run-dir <run_dir> --seed 42 --draws 1000 --validation-batches 8 \
+  --iface-start 0 --iface-end 24 --out out/seed_42_d42
 ```
 
 If the corrected candidate is empty, the script writes a JSON record with
 `status: "NE"`.
+
+Put each run under `out/seed_<model>_d<data>/`, then summarize RRP and the
+tie-inclusive `p_MC` for the four null families:
+
+```bash
+python scripts/summarize_event_local.py --root out --out out/summary
+```
 
 ## Data
 
@@ -110,7 +117,7 @@ external dataset is required.
 ```
 configs/        default, world B, formal and smoke configs
 src/            model, training, analysis, lesion, null samplers (24 modules)
-scripts/        matched-null assay, summary, candidate-table builder
+scripts/        matched-null assay and summary, event-local assay and summary, candidate-table builder
 tests/          CPU smoke test
 ```
 
