@@ -1,7 +1,7 @@
-PyYAML
-numpy
-scipy
-networkx
-scikit-learn
-matplotlib
-torch
+PyYAML==5.4.1
+numpy==1.26.4
+scipy==1.15.3
+networkx==3.4.2
+scikit-learn==1.7.2
+matplotlib==3.10.9
+torch==2.5.1

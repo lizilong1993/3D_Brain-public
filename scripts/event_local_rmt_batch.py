@@ -99,7 +99,7 @@ def main():
     ap.add_argument("--run-dir", required=True)
     ap.add_argument("--seed", type=int, required=True)
     ap.add_argument("--draws", type=int, default=1000)
-    ap.add_argument("--validation-batches", type=int, default=2)
+    ap.add_argument("--validation-batches", type=int, default=8)
     ap.add_argument("--out", required=True)
     ap.add_argument("--device", default="cuda")
     ap.add_argument("--iface-start", type=int, default=0)
@@ -125,9 +125,17 @@ def main():
     analysis = load_json(run_dir / "analysis" / "results.json")
     region_id = analysis["predicted_regions_nonlesion"]["control"]["region_id"]
     region_map = {int(k): int(v) for k, v in load_json(run_dir / "analysis" / "regions.json").items()}
-    candidate = sorted(n for n, r in region_map.items() if r == int(region_id) and n not in interface)
+    raw_candidate = sorted(n for n, r in region_map.items() if r == int(region_id))
+    candidate = sorted(n for n in raw_candidate if n not in interface)
+    raw_iai = (
+        len(set(raw_candidate) & interface) / len(raw_candidate) if raw_candidate else None
+    )
     if args.candidate_nodes:
-        candidate = sorted(int(x) for x in args.candidate_nodes.split(";") if x)
+        raw_candidate = sorted(int(x) for x in args.candidate_nodes.split(";") if x)
+        candidate = sorted(n for n in raw_candidate if n not in interface)
+        raw_iai = (
+            len(set(raw_candidate) & interface) / len(raw_candidate) if raw_candidate else None
+        )
 
     status = "ok"
     if not candidate:
@@ -137,8 +145,14 @@ def main():
             "checkpoint": str(ckpt),
             "seed": args.seed,
             "status": "NE",
+            "ne_type": "empty_corrected_candidate",
             "reason": "corrected candidate is empty under the declared interface",
             "interface": [min(interface), max(interface)],
+            "raw_candidate": raw_candidate,
+            "corrected_candidate": [],
+            "raw_candidate_size": len(raw_candidate),
+            "corrected_candidate_size": 0,
+            "raw_iai": raw_iai,
             "candidate": [],
         }
         (out_dir / f"event_local_seed{args.seed}.json").write_text(json.dumps(payload_out, indent=2))
@@ -241,8 +255,14 @@ def main():
         "checkpoint": str(ckpt),
         "seed": args.seed,
         "status": status,
+        "ne_type": None,
         "device": str(device),
         "interface": [min(interface), max(interface)],
+        "raw_candidate": raw_candidate,
+        "corrected_candidate": candidate,
+        "raw_candidate_size": len(raw_candidate),
+        "corrected_candidate_size": len(candidate),
+        "raw_iai": raw_iai,
         "candidate": candidate,
         "candidate_stats": stats,
         "validation_batches": args.validation_batches,
