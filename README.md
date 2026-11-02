@@ -166,7 +166,7 @@ https://github.com/lizilong1993/srnn-cra
 
 ### Zenodo archive
 
-This release is archived on Zenodo: [10.5281/zenodo.23876014](https://doi.org/10.5281/zenodo.23876014). The reproducibility package (assay outputs, configs, split table) is archived as [10.5281/zenodo.23879010](https://doi.org/10.5281/zenodo.23879010). Deposition uses a personal access token supplied through the `ZENODO_TOKEN` environment variable. The token is not stored in this repository or in any file tracked by it.
+This release is archived on Zenodo. Code (all versions): [10.5281/zenodo.23876013](https://doi.org/10.5281/zenodo.23876013); this version (v1.1.0): [10.5281/zenodo.23879557](https://doi.org/10.5281/zenodo.23879557). The reproducibility package (assay outputs, configs, split table) is archived as [10.5281/zenodo.23879010](https://doi.org/10.5281/zenodo.23879010). Deposition uses a personal access token supplied through the `ZENODO_TOKEN` environment variable. The token is not stored in this repository or in any file tracked by it.
 
 ### Citation
 
