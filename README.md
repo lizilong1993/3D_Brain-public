@@ -63,6 +63,7 @@ This repository is the code layer of that audit. It contains the implementation 
 | `run_matched_null_assay.py` | Recurrent-lesion assay on a candidate and its matched null regions. Excludes control-readout nodes 16–23 and writes one CSV row per null region. |
 | `summarize_matched_null.py` | Computes RRP and `p_MC` from the lesion-assay CSV. Expects 10 seeds × 4 null types × 1000 draws. |
 | `predictor_loso.py` | Leave-one-seed-out versus leave-one-run-out audit of the 21-feature structure-only classifier; writes fold metrics and an optional split table. |
+| `report_match_quality.py` | Quantifies the residual degree, surface-fraction, and mean-distance mismatch for the approximately matched null families. |
 | `build_confirmatory_master.py` | Combines per-seed analysis results and the matched-null summary into the confirmatory table. Expects `<analysis-root>/seed_<42..51>/main_B/analysis/`. |
 
 ## 3. How to run
@@ -165,7 +166,7 @@ https://github.com/lizilong1993/srnn-cra
 
 ### Zenodo archive
 
-This release is archived on Zenodo: [10.5281/zenodo.23876014](https://doi.org/10.5281/zenodo.23876014). Deposition uses a personal access token supplied through the `ZENODO_TOKEN` environment variable. The token is not stored in this repository or in any file tracked by it.
+This release is archived on Zenodo: [10.5281/zenodo.23876014](https://doi.org/10.5281/zenodo.23876014). The reproducibility package (assay outputs, configs, split table) is archived as [10.5281/zenodo.23879010](https://doi.org/10.5281/zenodo.23879010). Deposition uses a personal access token supplied through the `ZENODO_TOKEN` environment variable. The token is not stored in this repository or in any file tracked by it.
 
 ### Citation
 
